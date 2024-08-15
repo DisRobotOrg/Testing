@@ -1,0 +1,171 @@
+<%- include('../include/source'); -%>
+
+<html>
+    <head>
+    <title><%= guild.name %> - AutoLine</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+        <script src="/dashboard.js"></script>
+        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+    </head>
+    <body>
+
+<div class="wrapper">
+  
+    <%- include('../include/sidemenu'); -%>
+
+    <!-- Settings -->
+    <%- include('../include/header'); -%>
+
+        <section class="content">
+        <div class="overview-all">
+
+        <h1>Auto Line</h1>
+        <hr style="width: 90%; margin: 20px auto;">
+          <div style="position: relative;padding: 15px 0;">
+            <button class="btn" id="new" onclick="newElement()" style="right: 0; position: absolute;margin: auto;top: 0;"><i class="bi bi-cloud-plus"></i>&nbsp; New Channel</button>
+          </div>
+          
+        <form method="POST">
+          <button type="submit" class="btn btn-save">
+              <i class="fas fa-save"></i>
+          </button>
+          
+          <div class="cart_mod" style="width: 100% !important;">
+            <div class="">
+                <div style="position: relative;">
+                    <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Link of Line:</h5>
+                </div>
+            </div>
+            <hr>
+            <input type="text" class="input" name="lineLink" value="<%= line.link ? line.link : "" %>" placeholder="Put Line Link">
+            <p />
+          </div>
+          
+            <div class="row mt-3" style="justify-content: center;" id="lines">
+              <% if(autoline) { 
+                autoline.channelId.forEach(line => { 
+                if(line == "none") return;  %>
+                  <div class="col-md-6 my-1 cart_mod">
+                    <div class="">
+                        <div style="position: relative;">
+                            <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Channel :</h5>
+                        </div>
+                    </div>
+                    <hr>
+                    <select class="input form-select" data-width="100%" data-live-search="true" aria-label="autoline" name="autolineChannel" >
+                        <option value="none" selected> None </option>
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= line === channel.id ? "selected" : ""%>> <%=channel.name%> </option>
+                        <% }) %>
+                    </select>
+                    <p />
+                  </div>
+                <% })
+               } else { %>
+                <div class="col-md-6 my-1 cart_mod">
+                    <div class="">
+                        <div style="position: relative;">
+                            <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Channel :</h5>
+                        </div>
+                    </div>
+                    <hr>
+                    <select class="input form-select" data-width="100%" data-live-search="true" aria-label="autoline" name="autolineChannel" >
+                          <option value="none" selected> None </option>
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>"> <%=channel.name%> </option>
+                        <% }) %>
+                    </select>
+                    <p />
+                </div>
+              <% } %>
+            </div>
+        </section>     
+        <!-- Welcome -->
+</div>
+<script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+document.getElementById("autoline").classList.add('btn-sidebar-active');
+
+document.getElementById("autoline").classList.remove('btn-sidebar');
+
+  function newElement() {
+    var parent = document.getElementById("lines");
+    
+    var div1 = document.createElement("div");
+    div1.className = ["col-md-6 my-1 cart_mod"];
+    parent.appendChild(div1);
+    
+    var div2 = document.createElement("div");
+    div2.className = [" "];
+    div1.appendChild(div2);
+
+    var div3 = document.createElement("div");
+    div3.style = "position: relative;";
+    div2.appendChild(div3);
+    
+
+    /*var input = document.createElement("input");
+    input.type = "checkbox";
+    input.className = "toggle";
+    input.name = "autoline";
+    input.style = "right: 0; position: absolute;";
+    input.checked; 
+    div3.appendChild(input);*/
+
+    var h5 = document.createElement("h5");
+    h5.style = "text-align: left; margin-top: 5px;";
+    h5.className = ["text-light feature-title"];
+    h5.innerHTML = "Channel :";
+    div3.appendChild(h5);
+
+    var hr = document.createElement("hr");
+    div1.appendChild(hr);
+
+    var select = document.createElement("select");
+    select.className = ["input form-select"];
+    select["data-width='100%'"];
+    select["data-live-search='true'"];
+    select["aria-label='autoline'"];
+    select.name = 'autolineChannel';
+    div1.appendChild(select);
+
+    var optionNone = document.createElement("option");
+    optionNone.value = "none";
+    optionNone.innerHTML = "None"
+    select.appendChild(optionNone);
+
+    <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+          var option = document.createElement("option");
+          option.value = "<%= channel.id%>";
+          option.innerHTML = "<%=channel.name%>";
+          select.appendChild(option);
+    <% }) %>
+
+    var p = document.createElement("p");
+    div1.appendChild(p);
+  }
+
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<html>
+
+  <head>
+    <title><%= bot.user.username %> Panel - Discord Official Website</title>
+    <link rel="icon" type="image/png" href="<%= bot.config.logo %>">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Clyt, bot, Clyt, top.gg, topgg, discord, dashboard, Clytbot dashboard" />
+    <meta name="description" content="Clyt dashboard , for your server .." />
+    <meta name="author" content="Clyt Bot Website" />
+    <link rel="stylesheet" href="/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  </head>
+
+  <!--MAIN BODY-->
+  <body>
+  <div class="sections" style="gap: 50px;">
+    <!-- HEADER -->
+    <%- include('include/header'); -%>
+  
+    <!-- INTRO -->
+    <section class="intro-section">
+      <div class="intro-items">
+        <div class="col-sm-6" id="text-animate" style="visibility: 'visible', opacity: 1, transition: 'opacity 0.6s cubic-bezier(0.5, 0, 0, 1) 0.2s'" data-sr-id="0" bis_skin_checked="1">
+            <span>Welcome To The official Clyt Website</span>
+            <h1 class="fw-bolder mt-1" style="margin: 10px; position: relative;">
+              Who is <span class="who">Clyt</span>
+            </h1>
+            <p class="seconed-descreption mt-3">
+              A bot that provides you with complete protection for your server.. <br>
+              Your server will not be attacked by vandals , <br>
+              You will no longer be  deceived  .
+            </p>
+
+            <div class="col-sm-6 rghhit">
+            <a href="https://discord.com/oauth2/authorize?client_id=1024717443916107786&amp;permissions=8&amp;scope=bot%20applications.commands" target="_blank">
+                <button class="btn" style="margin: 5px;"><i class="fa-brands fa-discord"></i> Invite Clyt</button></a>
+              <a href="/dashboard">
+                <button class="btn-no-bg" style="margin: 5px;"><i class="fa-solid fa-chart-line"></i> Dashboard Clyt</button></a>
+              <a href="/commands">
+                <button class="btn" style="margin: 5px;"><i class="bi bi-slash-square-fill"></i> Commands Clyt</button></a>
+            </div>
+        </div>
+      </div> 
+      
+      <div class="intro-img">
+        <img src="<%= bot.config.logo %>" width="300px" height="300px" />
+      </div> 
+    </section>
+
+  </div>
+  </body>
+
+  </html>

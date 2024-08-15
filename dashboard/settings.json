@@ -1,0 +1,11 @@
+{
+    "website": {
+    "domain" : "https://prodeyt2005.tk"
+    },
+    "config": {
+        "port": 80,
+        "callback": "https://prodeyt2005.tk/callback",
+        "clientID": "955838703874473984",
+        "secret": "M6gInY6vWdX1HwEzZm_knrnAM5SEXPcb"
+    }
+}

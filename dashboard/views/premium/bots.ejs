@@ -1,0 +1,153 @@
+<%- include('../include/source'); -%>
+
+<html>
+    <head>
+    <title>User Premium</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+        <script src="/dashboard.js"></script>
+        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+    </head>
+    <body>
+
+<div class="wrapper">
+    <%- include('../include/sidemenu-profile'); -%>
+
+    <!-- Settings -->
+    <%- include('../include/header'); -%>
+
+    <!-- Settings -->
+  <section class="content">
+    <div class="overview-all">
+      <div class="modal fade" id="pay" tabindex="-1" role="dialog" aria-labelledby="payTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">buying  Premium</h5>
+                <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </a>
+              </div>
+              <div class="modal-body">
+                <center>
+                  <button onclick="location.href='/pay'" class="btn-no-bg" style="margin: 5px;"><i class="fa-brands fa-paypal"></i>&nbsp; Paypal</button>
+                </center>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <h1>Premium Subscriptions</h1>
+        <button class="btn" data-toggle="modal" data-target="#pay"><i class="fa-solid fa-plus"></i>&nbsp; buying Custom Bot</button>
+      </div>
+      
+      <hr style="width: 90%; margin: 20px auto;">
+      <div class="row row-cols-4">
+        <% if(premium) {
+          premium.forEach(bot => {
+            const timeout = Date.now() - bot.date %>
+            <div class="col my-1 card stacked mt-5" style=" background-color: var(--gray-4); border: 1px solid var(--gray-2); max-width: 300px !important; margin: 10px;">
+              <div class="">
+                <div class="card-header pt-0 pb-2" style=" border-bottom-color: var(--gray-2); ">
+                  <center>
+                    <img src="<%= bot.avatar %>" class="rounded-circle card-price rounded-3" width="98px">
+                    <h4 class="text-white mt-3"><%= bot.username %></h4>
+                    <p class="text-white mb-0 fw-normal fs-6">Ends at <span><%= pretty(2592000000 - timeout, {verbose: true}).split(" ", 6).join(" ") %></span></p>
+                  </center>
+                </div>
+                <div class="card-body" style=" display: flex; justify-content: center; align-items: center;">
+                  <button type="button" role="button" data-toggle="modal" data-target="#<%= bot._id %>" class="btn"><i class="fa-solid fa-pen-to-square"></i>&nbsp; Edit</button>
+                  <% if(bot.guildId) { %>
+                    <button onclick="location.href='https://discord.com/api/oauth2/authorize?client_id=<%= bot._id %>&permissions=536836762879&scope=applications.commands%20bot&guild_id=<%= bot.guildId %>'" class="btn-no-bg" style="margin: 5px;" target="_blank"><i class="fa-solid fa-plus"></i>&nbsp; Invite</button>
+                  <% } %>
+                </div>
+              </div> 
+              
+              <form method="POST">
+                <div class="modal fade" id="<%= bot._id %>" tabindex="-1" role="dialog" aria-labelledby="<%= bot._id %>Title" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="<%= bot._id %>LongTitle">Edit Premium Bot</h5>
+                        <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </a>
+                      </div>
+                      <div class="modal-body">
+                        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                          <div style="margin: 10px;">
+                            <img src="<%= bot.avatar %>" class="rounded-circle premium-edit-img rounded-3" width="98px">
+                          </div>
+                          <div style="margin: 10px; width: 100%;">
+                            <div>
+                              <h6 style="font-size: 15px; color: #c0c7cd; margin-left: 10px;">Username</h6>
+                              <input class="input" placeholder="Your Bot Name" name="<%= bot._id %>Name" value="<%= bot.username %>"></input>
+                            </div>
+                            <div style="margin-top: 15px;">
+                              <h6 style="font-size: 15px; color: #c0c7cd; margin-left: 10px;">Server</h6>
+                              <select class="input form-select" data-width="100%" data-live-search="true" aria-label="guild" name="<%= bot._id %>Server" >
+                                  <% req.user.guilds.filter(guild=>{
+                                    const permsOnGuild = new Permissions(guild.permissions_new);
+                                    if(permsOnGuild.has(Permissions.Flags.ManageGuild)) return guild;
+                                    }).forEach(guild => { 
+                                      if (premiums.some(e => e.guildId === guild.id && bot.guildId !== guild.id)) return; %>
+                                    <option value="<%= guild.id %>" 
+                                       <%= bot.guildId === guild.id ? "selected" : "" %> > <%= guild.name %>
+                                    </option>
+                                  <% }) %>
+                              </select>
+                            </div>
+                          </div>
+                      </div>
+                      </div>
+                      <div class="modal-footer">
+                        <a type="button" class="btn" data-dismiss="modal">Close</a>
+                        <button type="submit" class="btn">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          
+          <% })
+        } %>
+      </div>
+      
+      
+    </div>
+  </section>     
+        <!-- Welcome -->
+</div>
+<script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+document.getElementById("premium").classList.add('btn-sidebar-active');
+
+document.getElementById("premium").classList.remove('btn-sidebar');
+
+
+</script>
+
+    </body>
+</html>
+
+

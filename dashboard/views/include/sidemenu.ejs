@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="/css/index.css">
+      <button id="menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+
+  <% const realUser = bot.users.cache.get(user.id) || user ; %>
+    <div class="menu-side" id="menu-side">
+        <nav class="navbar-side" id="mySidenav">
+          <% let gavatar = `https://ui-avatars.com/api/?background=110f15&uppercase=false&color=dbdcdd&size=128&font-size=0.33&name=${guild.name}`;
+          if(guild.icon) gavatar = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}`; %>
+        <div class="guild" style="--bg: url(<%= `${gavatar}` %>);">
+            <center class="mt-4">
+              <h3 class="mb-0">
+                <div class="avatar avatar-xl">
+                  <img oncontextmenu="return false" draggable="false" width="82px" class="profile-img" data-position="right" src="<%= `${gavatar}` %>">
+                </div>
+              </h3>
+              <h4 class="mb-0 mt-2"><%= guild.name %></h4>
+      			</center>
+            <hr>
+        </div>
+            
+            <p class="sidebar-cetegory"><i class="bi bi-house-fill" style="margin-right: 5px;"></i> General</p>
+            <ul>
+              <li ><a id="overview" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>"><div><i class="bi bi-eye"></i>&nbsp; Overview</div></a></li>
+              <li ><a id="settings" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/settings"><div><i class="bi bi-sliders"></i>&nbsp; Settings</div></a></li>
+              <li ><a id="members" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/members"><div><i class="bi bi-people"></i>&nbsp; Members <span class="new-component-tag">Owner</span></div></a></li>
+              <!-- <li ><a id="premium" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/premium"><div><i class="fa-solid fa-crown"></i>&nbsp; Premium</div></a></li> -->
+            </ul>
+
+            <p class="sidebar-cetegory"><i class="bi bi-command" style="margin-right: 5px;"></i> Customize Commands</p>
+            <ul>
+              <li ><a id="automod" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/automod"><div><i class="bi bi-gear"></i>&nbsp; Auto Mod <span class="vip-component-tag">Beta</span></div></a></li>
+              <li ><a id="ultra" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/ultra"><div><i class="bi bi-binoculars"></i>&nbsp; Punishment </div></a></li>
+              <li ><a id="autorestore" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/autorestore"><div><i class="bi bi-arrow-counterclockwise"></i>&nbsp; Auto Restore </div></a></li>
+              <li ><a id="autorole" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/autorole"><div><i class="bi bi-person-plus"></i>&nbsp; Auto Role</div></a></li>
+              <li ><a id="welcome" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/welcome"><div><i class="bi bi-image"></i>&nbsp; Welcomer</div></a></li>
+              <li ><a id="logging" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/logging"><div><i class="bi bi-clock-history"></i>&nbsp; Logging</div></a></li>
+              <li ><a id="autoline" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/autoline"><div><i class="bi bi-robot"></i>&nbsp; Auto Line</div></a></li>
+            </ul>
+
+            <p class="sidebar-cetegory"><i class="bi bi-archive-fill" style="margin-right: 5px;"></i>Other</p>
+            <ul>
+              <li ><a id="history" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/history"><div><i class="bi bi-hourglass-split"></i>&nbsp; History</div></a></li>
+              <li ><a id="notifications" class="linetext btn-sidebar" href="/dashboard/<%= `${guild.id}`%>/notifications"><div><i class="bi bi-bell"></i>&nbsp; Notifications</div></a></li>
+            </ul>
+        </ul>
+    </nav>
+<nav class="sidebar-servers">
+    <div class="fluid">
+        <div class="sidebar-item-profile" id="<%= realUser.id %>">
+            <a class="" href="/dashboard">
+                <img src="https://cdn.discordapp.com/avatars/<%=realUser.id%>/<%=realUser.avatar%>.png" class="sidebar-img"
+                    oncontextmenu="return false" draggable="false" width="50px" height="50px"
+                    alt="" style="border-radius: 15px;" data-bs-toggle="tooltip" data-bs-placement="right" title="Profile">
+            </a>
+        </div>
+        <hr style="width: 75%; margin: 10px auto;">
+        <% if(user && user.id) { %>
+            <ul class="">
+                <% user.guilds.filter(guild=>{
+                    const permsOnGuild = new Permissions(guild.permissions_new);
+                    if(permsOnGuild.has(Permissions.Flags.ManageGuild)) return guild;
+                    }).sort((a, b) => {
+                    return (bot.guilds.cache.get(a.id) == bot.guilds.cache.get(b.id)) ? 0 : a ? -1 : 1;
+                    }).forEach(guild1 => {
+                    let gavatar = `https://ui-avatars.com/api/?background=18161e&uppercase=false&color=dbdcdd&size=128&font-size=0.33&name=${guild1.name.replace(" ", "+")}`;
+                    if(guild1.icon) gavatar = `https://cdn.discordapp.com/icons/${guild1.id}/${guild1.icon}`;
+                    %>
+                    <li class="sidebar-item">
+                        <a class="" href="/dashboard/<%= `${guild1.id}`%>">
+                          <img src="<%= `${gavatar}` %>" class="<%= guild.id == guild1.id ? 'sidebar-img-activate' : 'sidebar-img' %>"
+                          oncontextmenu="return false" draggable="false" width="50px" height="50px"
+                          alt="<%= guild1.name %>" style="border-radius: 15px;" data-bs-toggle="tooltip" data-bs-placement="right" title="<%= guild1.name %>">
+                        </a>
+                    </li>
+                    
+                    <% }) %>
+                        <% } %>
+    </div>
+
+
+
+    </ul>
+    </div>
+</nav>
+    </div>
+<script src="/js/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script>
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+
+    const menu = document.getElementById("menu")
+    const menuSide = document.getElementById("menu-side")
+
+    menu.addEventListener("click", () => {
+        menu.classList.toggle("is-active")
+        menuSide.classList.toggle("is-active")
+    })
+</script>

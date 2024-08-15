@@ -1,0 +1,297 @@
+
+<%- include('../include/source'); -%>
+
+<html>
+    <head>
+    <title><%= guild.name %> - Logger</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+        <script src="/dashboard.js"></script>
+        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+    </head>
+    <body>
+
+<div class="wrapper">
+  
+    <%- include('../include/sidemenu'); -%>
+
+    <!-- Settings -->
+    <%- include('../include/header'); -%>
+
+        <section class="content">
+        <div class="overview-all">
+          
+        <h1>Logs Channel</h1>
+        <hr style="width: 90%; margin: 20px auto;">
+        <form method="POST">
+          <button type="submit" class="btn btn-save">
+              <i class="fas fa-save"></i>
+          </button>
+        <div class="row mt-3">
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                    <%if(logs.message) {%>
+                        <%if(logs.message.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="messages" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.message.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="messages" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="messages" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Messages:</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="messages" name="messagesChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.message.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.channel) {%>
+                        <%if(logs.channel.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="channel" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.channel.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="channel" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="channel" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Channel Updates:</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="channel" name="channelChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.channel.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.role) {%>
+                        <%if(logs.role.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="role" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.role.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="role" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="role" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Roles Updates:</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="role" name="roleChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.role.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.banned) {%>
+                        <%if(logs.banned.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="banned" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.banned.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="banned" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="banned" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Ban's:</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="banned" name="bannedChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.banned.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.kick) {%>
+                        <%if(logs.kick.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="kick" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.kick.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="kick" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="kick" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Kick's :</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="kick" name="kickChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.kick.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.voice) {%>
+                        <%if(logs.voice.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="voice" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.voice.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="voice" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="voice" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Voice Updates :</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="voice" name="voiceChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.voice.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.guildMemberAdd) {%>
+                        <%if(logs.guildMemberAdd.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="joins" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.guildMemberAdd.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="joins" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="joins" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Joins :</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="joins" name="joinsChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.guildMemberAdd.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+
+            <div class=" col-md-6 my-1 cart_mod">
+                <div class="">
+                    <div style="position: relative;">
+                        <%if(logs.leaves) {%>
+                        <%if(logs.leaves.toggle === "true") {%>
+                            <input type="checkbox" class="toggle" name="leaves" style="right: 0; position: absolute;" checked>
+                        <% } else if(logs.leaves.toggle === "false") {%>
+                            <input type="checkbox" class="toggle" name="leaves" style="right: 0; position: absolute;">
+                    <% } } else { %>
+                        <input type="checkbox" class="toggle" name="leaves" style="right: 0; position: absolute;">
+                    <% }%>  
+                        <h5 class="text-light feature-title" style="text-align: left; margin-top: 5px;" style="left: 0; position: absolute;">Leaves :</h5>
+                    </div>
+                </div>
+                <hr>
+                <select class="input form-select" data-width="100%" data-live-search="true" aria-label="leaves" name="leavesChannel" >
+                        <% guild.channels.cache.filter(c => c.type === Discord.ChannelType.GuildText).sort((a, b) => b.rawPosition - a.rawPosition).forEach((channel, i) => { %>
+                          <option value="<%= channel.id%>" 
+                            <%= logs.leaves.channel === channel.id ? "selected" : ""%>> <%=channel.name%>
+                          </option>
+                        <% }) %>
+                    </select>
+                <p />
+            </div>
+        </div>
+        </section>     
+        <!-- Welcome -->
+</div>
+<script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+document.getElementById("logging").classList.add('btn-sidebar-active');
+
+document.getElementById("logging").classList.remove('btn-sidebar');
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const labels = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+  ];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'My First dataset',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [0, 10, 5, 2, 20, 30, 45],
+    }]
+  };
+
+  const config = {
+    type: 'doughnut',
+    data: data,
+    options: {}
+  };
+
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
+
+    </body>
+</html>
+
+
